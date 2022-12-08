@@ -1,6 +1,8 @@
 # SuperPatcherGSI
 Autmated Script to Patch a Super.img with a GSI in python 3
 
+using lpmake from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
+
 ### How to run on windows
 ```powershell
 python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
