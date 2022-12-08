@@ -5,8 +5,7 @@ import stat
 import shutil
 
 TempDIR = os.path.abspath(".") + "/" + "temp"
-devicesize = 6144000000
-metadatasize = 65536
+
 
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-h' , '--help', action='help', default=argparse.SUPPRESS, help='displays all flags and there purpose')
@@ -29,13 +28,18 @@ def check():
     else:
         print("Invalid Format at INPUT please use .img file")
         err += " &InvalidFormatINPUT"
+    if args.output.endswith(".img"):
+        pass
+    else:
+        print("Invalid Format at INPUT please use .img file")
+        err += " &InvalidFormatOUTPUT"
     if args.gsi.name.endswith(".img"):
         pass
     else:
         print("Invalid Format at GSI please use .img file")
         err += " &InvalidFormatGSI"
     if err == "":
-        err == "OK"
+        err = "OK"
     return err
 
 # unpack / replacing
@@ -51,8 +55,8 @@ def IMGchoose(): # choose an img file to be replaced
             print("option number " + str(i) + " " + TempImgList[i] + " size of (" + str(os.path.getsize(TempDIR + "/" + img)) + ") bytes")
         i += 1
     while (True):
-        imgnum = input("Please Choose: ")
         try:
+            imgnum = input("Please Choose: ")
             if int(imgnum) <= i - 1:
                 return TempImgList[int(imgnum)]
             else:
@@ -89,7 +93,7 @@ def IMGremove(): # choose an img file to be replaced
 
 
 # lpmake
-def lpmake():
+def lpmake(devicesize , metadatasize):
     
     lpmake_args = " --device-size={devicesize}".format(devicesize=devicesize) + " --metadata-slots={slot}".format(slot=args.SLOT) + " --output {output}".format(output=args.output) + " --metadata-size {metadatasize}".format(metadatasize=metadatasize)
     sparse = input("make sparse (flashable with fastboot) ? (Y/n): ")
@@ -148,6 +152,8 @@ def main():
     IMGreplace(IMGchoose()) # replaces selcted partition with GSI
     
     #let user choose size
+    metadatasize = 65536
+    devicesize = 6144000000
     print("============================")
     try:
         dvsize = input("device size (super.img size) in bytes must be evenly divisible by 512 defualt=~6G: ")
@@ -164,7 +170,7 @@ def main():
         print("Invalid Number skipping ..!")
     
     #repack
-    err = lpmake()
+    err = lpmake(devicesize , metadatasize)
     print("============================")
     print("  lpmake said ({errcode})!".format(errcode=err))
     print("============================")
