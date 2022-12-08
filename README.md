@@ -7,7 +7,7 @@ python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -g li
 ```
 
 ### Command Flags:
-```shell
+```
 usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-g GSI] [-s SLOT]
 
 options:
