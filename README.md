@@ -1,7 +1,7 @@
 # SuperPatcherGSI
 Autmated Script to Patch a Super.img with a GSI in python 3
 
-using lpmake from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
+using lpmake for windows from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
 
 ### How to run on windows
 ```powershell
