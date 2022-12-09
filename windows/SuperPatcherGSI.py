@@ -74,7 +74,7 @@ def IMGchoose(): # choose an img file to be replaced
             print("Please Put a Number In!")
 
 def IMGreplace(TempImgName): # replace img with GSI
-    shutil.copy(args.gsi.name , TempImgName)
+    shutil.copy(args.gsi.name , TempDIR + "/" + TempImgName)
 
 # remove non useable user choice
 
@@ -156,10 +156,10 @@ def main():
     
     #let user choose size
     metadatasize = 65536
-    devicesize = 6144000000
+    devicesize = 8192000000
     print("============================")
     try:
-        dvsize = input("device size (super.img size) in bytes must be evenly divisible by 512 defualt=~6G: ")
+        dvsize = input("device size (super.img size) in bytes must be evenly divisible by 512 defualt=~8G: ")
         if dvsize != "" and testdvi512(int(dvsize)):
             devicesize = int(dvsize)
     except ValueError:
