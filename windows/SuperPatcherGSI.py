@@ -4,7 +4,7 @@ from sys import argv
 import stat
 import shutil
 
-TempDIR = os.path.abspath(".") + "/" + "temp"
+TempDIR = os.getcwd() + "/" + "temp"
 
 
 parser = argparse.ArgumentParser(add_help=False)
