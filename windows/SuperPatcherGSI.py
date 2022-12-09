@@ -4,8 +4,7 @@ from sys import argv
 import stat
 import shutil
 
-TempDIR = os.getcwd() + "/" + "temp"
-
+TempDIR = os.getcwd() + "/" + "tmp"
 
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-h' , '--help', action='help', default=argparse.SUPPRESS, help='displays all flags and there purpose')
@@ -14,6 +13,16 @@ parser.add_argument('-o' , '--output', help="Directs the output to a name of you
 parser.add_argument('-g' , '--gsi' , type=argparse.FileType('r') , help="GSI (Generic System Image) that will be replacing the existing system.img (Stock Rom)")
 parser.add_argument('-s' , '--SLOT' , type=int , help="number of slots on the device can only be 1 (A) or 2 (A/B)")
 args = parser.parse_args()
+# 
+def removeext(img):
+    idx_dots = [idx for idx, x in enumerate(img) if x == '.']
+    min_idx = min(idx_dots)
+    return img[:min_idx]
+
+def getext(img):
+    idx_dots = [idx for idx, x in enumerate(img) if x == '.']
+    min_idx = min(idx_dots)
+    return img[min_idx:]
 
 # err check
 def check():
@@ -65,7 +74,7 @@ def IMGchoose(): # choose an img file to be replaced
             print("Please Put a Number In!")
 
 def IMGreplace(TempImgName): # replace img with GSI
-    shutil.copy(args.gsi.name , TempDIR + "/" + TempImgName)
+    shutil.copy(args.gsi.name , TempImgName)
 
 # remove non useable user choice
 
@@ -79,18 +88,17 @@ def IMGremove(): # choose an img file to be replaced
         if img.endswith(".img"):
             print("option number " + str(i) + " " + TempImgList[i] + " size of (" + str(os.path.getsize(TempDIR + "/" + img)) + ") bytes")
         i += 1
+    imgnum = input("Please Choose: ")
     while(True):
         try:
-            imgnum = input("Please Choose: ")
             if int(imgnum) <= i - 1:
-                os.remove( TempDIR + "/" + TempImgList[int(imgnum)])
+                os.remove(TempDIR + "/" + TempImgList[int(imgnum)])
                 break
             else:
                 print("Please Put a Valid Number!")
         except ValueError:
             print("Invalid Number Skipping ..!")
-
-
+            break
 
 # lpmake
 def lpmake(devicesize , metadatasize):
@@ -117,13 +125,8 @@ def lpmake_add_args(lpmake_args):
     for img in TempImgList:
         if img.endswith(".img"):
             lpmake_args += " --partition={name}:none:{size}".format(name=removeext(img) , size=os.path.getsize(TempDIR + "/" + img))
-            lpmake_args += " --image={name}={filedir}".format(name=img , filedir=(TempDIR + "/" + img))
+            lpmake_args += " --image={name}={filedir}".format(name=removeext(img) , filedir=(TempDIR + "/" + img))
     return lpmake_args
-
-def removeext(img):
-    idx_dots = [idx for idx, x in enumerate(img) if x == '.']
-    min_idx = min(idx_dots)
-    return img[:min_idx]
 
 def testdvi512(num):
     if num % 512 == 0:
@@ -136,7 +139,7 @@ def main():
 
     if err != "OK":
         print("error code ({error}) exiting...!".format(error=err))
-        return
+        return err
     else:
         print("flags successfully verified and appear to be correct, error code ({error})".format(error=err))
     
@@ -170,9 +173,8 @@ def main():
         print("Invalid Number skipping ..!")
     
     #repack
-    err = lpmake(devicesize , metadatasize)
-    print("============================")
-    print("  lpmake said ({errcode})!".format(errcode=err))
-    print("============================")
+    lpmake(devicesize , metadatasize)
+    
 
-main()
+err = main()
+exit(err)
