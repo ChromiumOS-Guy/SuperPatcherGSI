@@ -28,7 +28,7 @@ lpmake has no documentation (that I have heard of) except this one page here (ht
 
 so I'm giving a very small list of lpmake errors which I know how to fix or I the meaning of:
 
-Errors  | Meaning
+Errors  | Meaning/Fix
 ------------- | -------------
 Not enough space on device for partition (PARTITION NAME HERE) with size (PARTITION SIZE HERE)  | this means that the --device-size flag for lpmake was set with a maximum size which is smaller than all the partitions (unpacked img files + GSI) combined
 [liblp]Partition should only have linear extents: (PARTITION NAME HERE)  | this error code can ber resolved by deleteing said partition (which rectifies the error) and just reflashing stock rom (stock super.img) first and then flashing the GSI modifed super.img (works for me that may not be the case for you keep that in mind while trying this out)
