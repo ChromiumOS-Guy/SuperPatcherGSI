@@ -43,6 +43,6 @@ Invalid sparse file format at header magic / Invalid sparse file format at heade
 ### sources:
 using lpmake for windows from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
 
-using lpmake for linux from (https://ci.android.com/builds/branches/aosp-master/grid?)
+using lpmake for linux from (https://ci.android.com/builds/branches/aosp-master/grid)
 
 using lpunpack.py from (https://github.com/unix3dgforce/lpunpack)
