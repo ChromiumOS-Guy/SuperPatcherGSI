@@ -174,6 +174,11 @@ def main():
     
     #repack
     lpmake(devicesize , metadatasize)
+    print("============================")
+    print("        cleaning...")
+    print("============================")
+    shutil.rmtree(TempDIR) # clean tmp dir
+    return err # return err code to external
     
 
 err = main()
