@@ -1,10 +1,11 @@
 # SuperPatcherGSI
 Autmated Script to Patch a Super.img with a GSI in python 3
 
-### How to run on windows
+### Windows
 ```powershell
 python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
 ```
+python version used to test / build the windows script (Python 3.11.0)
 
 ### Command Flags:
 ```
