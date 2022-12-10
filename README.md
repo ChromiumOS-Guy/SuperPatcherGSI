@@ -28,7 +28,7 @@ lpmake has no documentation (that I have heard of) except this one page here (ht
 
 so I'm giving a very small list of lpmake errors which I know how to fix or I the meaning of:
 
-First Header  | Second Header
+Errors  | Meaning
 ------------- | -------------
 Content Cell  | Content Cell
 Content Cell  | Content Cell
