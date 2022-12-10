@@ -26,7 +26,7 @@ options:
 ### lpmake errors: 
 lpmake has no documentation (that I have heard of) except this one page here (https://android.googlesource.com/platform/system/extras/+/master/partition_tools/)
 
-so I'm giving a very small list of lpmake errors which I know how to fix or I the meaning of:
+so I'm giving a very small list of lpmake errors which I know how to fix or the meaning of:
 
 Errors  | Meaning/Fix
 ------------- | -------------
