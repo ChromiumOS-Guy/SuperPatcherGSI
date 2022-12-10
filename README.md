@@ -30,5 +30,5 @@ so I'm giving a very small list of lpmake errors which I know how to fix or I th
 
 Errors  | Meaning
 ------------- | -------------
-Not enough space on device for partition (PARTITION NAME HERE) with size (PARTITION SIZE HERE)  | this means that the --device-size flag for lpmake was set with a maximum size which is smaller than all the partitions combined
+Not enough space on device for partition (PARTITION NAME HERE) with size (PARTITION SIZE HERE)  | this means that the --device-size flag for lpmake was set with a maximum size which is smaller than all the partitions (unpacked img files + GSI) combined
 Content Cell  | Content Cell
