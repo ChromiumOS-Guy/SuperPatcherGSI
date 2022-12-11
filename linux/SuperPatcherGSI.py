@@ -76,30 +76,6 @@ def IMGchoose(): # choose an img file to be replaced
 def IMGreplace(TempImgName): # replace img with GSI
     shutil.copy(args.gsi.name , TempDIR + "/" + TempImgName)
 
-# remove non useable user choice
-
-def IMGremove(): # choose an img file to be replaced
-    TempImgList = os.listdir(TempDIR)
-    print("============================")
-    print("choose img to delete: ")
-    print("============================")
-    i = 0
-    for img in TempImgList:
-        if img.endswith(".img"):
-            print("option number " + str(i) + " " + TempImgList[i] + " size of (" + str(os.path.getsize(TempDIR + "/" + img)) + ") bytes")
-        i += 1
-    imgnum = input("Please Choose: ")
-    while(True):
-        try:
-            if int(imgnum) <= i - 1:
-                os.remove(TempDIR + "/" + TempImgList[int(imgnum)])
-                break
-            else:
-                print("Please Put a Valid Number!")
-        except ValueError:
-            print("Invalid Number Skipping ..!")
-            break
-
 # lpmake
 def lpmake(devicesize , metadatasize):
     
@@ -108,9 +84,6 @@ def lpmake(devicesize , metadatasize):
     if sparse == "Y" or sparse == "y" or sparse == "yes" or sparse == "Yes" or sparse == "": # just making sure
         lpmake_args += " --sparse"
     
-    rm = input("do you want to remove a partition (sometimes it resolves an error) (Y/n): ") # vendor_b.img sometimes causes problems and is not needed (here so it makes sense in log)
-    if rm == "Y" or rm == "y" or rm == "yes" or rm == "Yes" or rm == "": # just making sure
-        IMGremove()
     lpmake_args = lpmake_add_args(lpmake_args)
     print("============================")
     print("    using these flags:")
@@ -125,7 +98,8 @@ def lpmake_add_args(lpmake_args):
     for img in TempImgList:
         if img.endswith(".img"):
             lpmake_args += " --partition={name}:none:{size}".format(name=removeext(img) , size=os.path.getsize(TempDIR + "/" + img))
-            lpmake_args += " --image={name}={filedir}".format(name=removeext(img) , filedir=(TempDIR + "/" + img))
+            if os.path.getsize(TempDIR + "/" + img) != 0:
+                lpmake_args += " --image={name}={filedir}".format(name=removeext(img) , filedir=(TempDIR + "/" + img))
     return lpmake_args
 
 def testdvi512(num):
