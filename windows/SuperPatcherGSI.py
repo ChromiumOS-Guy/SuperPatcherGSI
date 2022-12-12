@@ -129,7 +129,7 @@ def main():
     IMGreplace(IMGchoose()) # replaces selcted partition with GSI
     
     #let user choose size
-    metadatasize = 65536
+    metadatasize = 512000
     devicesize = 8192000000
     print("============================")
     try:
@@ -140,7 +140,7 @@ def main():
         print("Invalid Number skipping ..!")
     
     try:
-        mdsize = input("metadata size in bytes must be evenly divisible by 512 defualt=65536: ")
+        mdsize = input("metadata size in bytes must be evenly divisible by 512 defualt=~0.5G: ")
         if mdsize != "" and testdvi512(int(dvsize)):
             metadatasize = int(mdsize)
     except ValueError:
