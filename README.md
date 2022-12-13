@@ -3,8 +3,9 @@ Autmated Script to Patch a Super.img with a GSI in python 3
 
 ONLY 64-bit linux & windows
 
-if your phones display won't wake up when pressing power button but the rest of the phone is functional then you have the same problem as me I have no idea why it happens its also not the scripts fault I checked it so many times but my current (very janky) solution is to install this app from F-Droid (Always On AMOLED)
-also this problem manifests itself a couple hours after the GSI install so don't think your out of the woods yet!
+if your phones display won't wake up when pressing power button but the rest of the phone is functional,
+it a brightness problem if you put your phone on the lowest brightness the backlight won't turn on
+so just don't do it (or make a android service which makes the display brightness 10 if its below that everytime the phone "wakes" from sleep)
 
 ### Windows (64-bit)
 ```powershell
