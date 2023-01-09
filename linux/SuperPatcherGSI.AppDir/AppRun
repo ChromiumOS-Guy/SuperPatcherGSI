@@ -1,6 +1,7 @@
 #!/bin/bash
 HERE="$(dirname "$(readlink -f "${0}")")"
-EXEC="${HERE}/usr/bin/SuperPatcherGSI.py"
+BIN="${HERE}/usr/bin"
+EXEC="${BIN}/SuperPatcherGSI.py"
 
 while getopts ":i:o:g:s:h" o; do
     case "${o}" in
@@ -34,4 +35,4 @@ options:
     esac
 done
 
-exec python3 "${EXEC}" -i "${INPUT}" -o "${OUTPUT}" -g "${GSI}" -s "${SLOT}"
+exec python3 "${EXEC}" -i "${INPUT}" -o "${OUTPUT}" -g "${GSI}" -s "${SLOT}" -d "${BIN}"
