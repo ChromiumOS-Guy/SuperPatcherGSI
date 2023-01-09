@@ -7,11 +7,11 @@ import shutil
 TempDIR = os.getcwd() + "/" + "tmp"
 
 parser = argparse.ArgumentParser(add_help=False)
-parser.add_argument('-h' , '--help', action='help', default=argparse.SUPPRESS, help='displays all flags and there purpose')
 parser.add_argument('-i' , '--input' , type=argparse.FileType('r') , help='''input the super.img that is going to be modifed, if super.img is sparse its going to temporarily be unsparsed''')
 parser.add_argument('-o' , '--output', help="Directs the output to a name of your choice")
 parser.add_argument('-g' , '--gsi' , type=argparse.FileType('r') , help="GSI (Generic System Image) that will be replacing the existing system.img (Stock Rom)")
 parser.add_argument('-s' , '--SLOT' , type=int , help="number of slots on the device can only be 1 (A) or 2 (A/B)")
+parser.add_argument("-d" , '--DIR')
 args = parser.parse_args()
 # 
 def removeext(img):
@@ -54,7 +54,7 @@ def check():
 # unpack / replacing
 
 def lpunpack():
-    os.system("python3 lpunpack.py {arg1} {arg2}".format(arg1=args.input.name, arg2=TempDIR))
+    os.system("python3 {arg3}/lpunpack.py {arg1} {arg2}".format(arg1=args.input.name, arg2=TempDIR , arg3=args.DIR))
 
 def IMGchoose(): # choose an img file to be replaced
     TempImgList = os.listdir(TempDIR)
@@ -91,7 +91,7 @@ def lpmake(devicesize , metadatasize):
     print(lpmake_args)
     print("============================")
     
-    os.system("./bin/lpmake {lpargs}".format(lpargs=lpmake_args))
+    os.system("{dir}/bin/lpmake {lpargs}".format(lpargs=lpmake_args , dir=args.DIR))
 
 def lpmake_add_args(lpmake_args):
     TempImgList = os.listdir(TempDIR)
