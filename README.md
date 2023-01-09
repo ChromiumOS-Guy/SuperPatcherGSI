@@ -14,7 +14,7 @@ python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -g li
 python version used to test / build the windows script (Python 3.11.0)
 ### Linux (64-bit)
 ```bash
-python3 SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
+./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
 ```
 python version used to test / build the linux script (Python 3.10.6)
 ### Command Flags:
