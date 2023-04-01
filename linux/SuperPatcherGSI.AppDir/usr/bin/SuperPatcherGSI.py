@@ -151,7 +151,7 @@ def main():
     print("============================")
     print("        cleaning...")
     print("============================")
-    #shutil.rmtree(TempDIR) # clean tmp dir
+    shutil.rmtree(TempDIR) # clean tmp dir
     return err # return err code to external
     
 
