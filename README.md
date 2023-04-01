@@ -29,7 +29,7 @@ options:
 ```
 
 ### Known Issues:
-1. SuperPatcherGSI (on windows) breaks if inputed any dir outside of C: drive, shows: (lpunpack.py: error: unrecognized arguments: m11\windows/tmp)
+1. SuperPatcherGSI (on windows) breaks if inputed any dir outside of C: drive, shows: (lpunpack.py: error: unrecognized arguments: m11\windows/tmp) or something similar.
 
 ### lpmake errors: 
 lpmake has no documentation (that I have heard of) except this one page here (https://android.googlesource.com/platform/system/extras/+/master/partition_tools/)
