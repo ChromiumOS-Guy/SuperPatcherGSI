@@ -28,6 +28,9 @@ options:
   -s SLOT, --SLOT SLOT  number of slots on the device can only be 1 (A) or 2 (A/B)
 ```
 
+### Known Issues:
+1. SuperPatcherGSI (on windows) breaks if inputed any dir outside of C: drive
+
 ### lpmake errors: 
 lpmake has no documentation (that I have heard of) except this one page here (https://android.googlesource.com/platform/system/extras/+/master/partition_tools/)
 
