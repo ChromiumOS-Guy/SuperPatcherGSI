@@ -3,11 +3,10 @@ HERE="$(dirname "$(readlink -f "${0}")")"
 BIN="${HERE}/usr/bin"
 EXEC="${BIN}/SuperPatcherGSI.py"
 
-while getopts ":i:o:g:s:d:h" o; do
+while getopts ":i:o:g:s:h" o; do
     case "${o}" in
         i)
             INPUT=${OPTARG}
-            ((s == 45 || s == 90)) || usage
             ;;
         o)
             OUTPUT=${OPTARG}
@@ -18,11 +17,8 @@ while getopts ":i:o:g:s:d:h" o; do
         s)
             SLOT=${OPTARG}
             ;;
-        d)
-            BIN=${OPTARG}
-            ;;
         h)
-            echo "usage: SuperPatcherGSI.py [-i INPUT] [-o OUTPUT] [-g GSI] [-s SLOT] [-d DIR]
+            echo "usage: SuperPatcherGSI.py [-i INPUT] [-o OUTPUT] [-g GSI] [-s SLOT]
 
 options:
   -h, --help (optional) displays all flags and there purpose
@@ -33,11 +29,9 @@ options:
                         Directs the output to a name of your choice
   -g GSI                GSI (Generic System Image) that will be replacing the existing system.img (Stock
                         Rom)
-  -s SLOT               number of slots on the device can only be 1 (A) or 2 (A/B)
-  -d DIR (optional)     Direcotry For The Binaries needs to contain bin/lpmake ,lib64/lpmake-libraries
-                        and lpunpack.py Don't use if you don't know how to it will result in error" ; exit 1
+  -s SLOT               number of slots on the device can only be 1 (A) or 2 (A/B)" ; exit 1
             ;;
     esac
 done
 
-exec python3 "${EXEC}" -i "${INPUT}" -o "${OUTPUT}" -g "${GSI}" -s "${SLOT}" -d "${BIN}"
+exec python3 "${EXEC}" -i "${INPUT}" -o "${OUTPUT}" -g "${GSI}" -s "${SLOT}"
