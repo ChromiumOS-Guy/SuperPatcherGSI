@@ -5,6 +5,7 @@ import stat
 import shutil
 
 TempDIR = os.getcwd() + "/" + "tmp"
+HERE = os.path.realpath(os.path.dirname(__file__))
 
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-h' , '--help', action='help', default=argparse.SUPPRESS, help='displays all flags and there purpose')
@@ -54,7 +55,7 @@ def check():
 # unpack / replacing
 
 def lpunpack():
-    os.system("python lpunpack.py {arg1} {arg2}".format(arg1=args.input.name, arg2=TempDIR))
+    os.system("python {dir}\lpunpack.py {superimg} {tempdir}".format(superimg=args.input.name, tempdir=TempDIR, dir=HERE))
 
 def IMGchoose(): # choose an img file to be replaced
     TempImgList = os.listdir(TempDIR)
@@ -91,7 +92,7 @@ def lpmake(devicesize , metadatasize):
     print(lpmake_args)
     print("============================")
     
-    os.system("lpmake.exe {lpargs}".format(lpargs=lpmake_args))
+    os.system("{dir}\lpmake.exe {lpargs}".format(lpargs=lpmake_args, dir=HERE))
 
 def lpmake_add_args(lpmake_args):
     TempImgList = os.listdir(TempDIR)
