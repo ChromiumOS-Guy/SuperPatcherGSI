@@ -3,10 +3,6 @@ Autmated Script to Patch a Super.img with a GSI in python 3
 
 ONLY 64-bit linux & windows
 
-if your phones display won't wake up when pressing power button but the rest of the phone is functional,
-its a brightness problem if you put your phone on the lowest brightness the backlight won't turn on
-so just don't do it (or make a android service which sets the display brightness to 10 if its below that everytime the phone "wakes" from sleep)
-
 ### Windows (64-bit)
 ```powershell
 python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
