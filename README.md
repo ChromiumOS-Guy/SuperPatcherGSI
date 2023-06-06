@@ -5,7 +5,7 @@ ONLY 64-bit Linux
 
 ### Linux (64-bit)
 ```bash
-./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
+./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -s 2 (device slots)
 ```
 python version used to test / build the linux script (Python 3.10.6)
 ### Command Flags:
