@@ -1,13 +1,8 @@
 # SuperPatcherGSI
 Autmated Script to Patch a Super.img with a GSI in python 3
 
-ONLY 64-bit linux & windows
+ONLY 64-bit Linux
 
-### Windows (64-bit)
-```powershell
-python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
-```
-python version used to test / build the windows script (Python 3.11.0)
 ### Linux (64-bit)
 ```bash
 ./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -g lineageOS.img (GSI) -s 2 (device slots)
@@ -29,7 +24,7 @@ options:
 ```
 
 ### Known Issues:
-1. SuperPatcherGSI (on windows) breaks if inputed any dir outside of C: drive, shows: (lpunpack.py: error: unrecognized arguments: m11\windows/tmp) or something similar.
+please tell me if you find any
 
 ### lpmake errors: 
 lpmake has no documentation (that I have heard of) except this one page here (https://android.googlesource.com/platform/system/extras/+/master/partition_tools/)
@@ -44,8 +39,6 @@ Invalid sparse file format at header magic / Invalid sparse file format at heade
 
 
 ### sources:
-using lpmake for windows from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
-
 using lpmake for linux from (https://ci.android.com/builds/branches/aosp-master/grid)
 
 using lpunpack.py from (https://github.com/unix3dgforce/lpunpack)
