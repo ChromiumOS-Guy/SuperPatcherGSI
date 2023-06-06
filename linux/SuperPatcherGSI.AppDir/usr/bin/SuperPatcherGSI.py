@@ -1,8 +1,7 @@
 import argparse
 import os
-from sys import argv
-import stat
 import shutil
+import pathlib
 
 TempDIR = os.getcwd() + "/" + "tmp"
 HERE = os.path.realpath(os.path.dirname(__file__))
@@ -12,37 +11,32 @@ parser.add_argument('-i' , '--input' , type=argparse.FileType('r') , help='''inp
 parser.add_argument('-o' , '--output', help="Directs the output to a name of your choice")
 parser.add_argument('-s' , '--SLOT' , type=int , help="number of slots on the device can only be 1 (A) or 2 (A/B)")
 args = parser.parse_args()
-# 
-def removeext(img):
-    idx_dots = [idx for idx, x in enumerate(img) if x == '.']
-    min_idx = min(idx_dots)
-    return img[:min_idx]
-
-def getext(img):
-    idx_dots = [idx for idx, x in enumerate(img) if x == '.']
-    min_idx = min(idx_dots)
-    return img[min_idx:]
 
 # err check
 def check():
     err = ""
-    if args.SLOT == 1 or args.SLOT == 2:
-        pass
-    else:
-        print("Invalid Slot number ({slot})".format(slot=args.SLOT))
-        err += " &SLOT"
-    if args.input.name.endswith(".img"):
-        pass
-    else:
-        print("Invalid Format at INPUT please use .img file")
-        err += " &InvalidFormatINPUT"
-    if args.output.endswith(".img"):
-        pass
-    else:
-        print("Invalid Format at INPUT please use .img file")
-        err += " &InvalidFormatOUTPUT"
-    if err == "":
-        err = "OK"
+    try:
+        if args.SLOT == 1 or args.SLOT == 2:
+            pass
+        else:
+            print("Invalid Slot number ({slot})".format(slot=args.SLOT))
+            err += " &SLOT"
+        if args.input.name.endswith(".img"):
+            pass
+        else:
+            print("Invalid Format at INPUT please use .img file")
+            err += " &InvalidFormatINPUT"
+        if args.output.endswith(".img"):
+            pass
+        else:
+            print("Invalid Format at INPUT please use .img file")
+            err += " &InvalidFormatOUTPUT"
+        if err == "":
+            err = "OK"
+    except ValueError:
+        err = "Flag ValueError"
+    except AttributeError:
+        err = "Flag AttributeError"
     return err
 
 # unpack / replacing
@@ -61,18 +55,22 @@ def IMGchoose(): # choose an img file to be replaced
         try:
             imgnum = input("Please Choose: ")
             if int(imgnum) <= i - 1:
-                replacmentpath = ""
                 while (True):
                     try:
                         replacmentpath = input("Please Input Path To Replacment Partition:\n")
-                        if replacmentpath.endswith(".img"):
-                            break
+                        replacmentpath = str(pathlib.Path(replacmentpath).absolute())
+                        if replacmentpath.endswith(".img") or replacmentpath.endswith(".img "): # sometimes people tap space it ruins it and it can and will get confusing
+                            brk = input("Are you sure this is the path to file (Y/n): ")
+                            if brk == "Y" or brk == "y" or brk == "yes" or brk == "Yes" or brk == "": # just making sure
+                                break
                         else:
                             print("Please Input a Valid Path to a IMG File!")
                     except ValueError:
-                        print("Please Input a Valid Path to a IMG File!")
+                        print("Please Input a Valid Path!")
+                    except AttributeError:
+                        print("How did you even manage to get AttributeError, this is here just incase !?")
                 shutil.copy(replacmentpath , TempDIR + "/" + TempImgList[int(imgnum)])
-                redo = input("img replaced!\nreplace another Y/n: ")
+                redo = input("Img replaced!\nreplace another (Y/n): ")
                 if redo == "Y" or redo == "y" or redo == "yes" or redo == "Yes": # just making sure
                     IMGchoose()
                 break
@@ -113,9 +111,9 @@ def lpmake_add_args(lpmake_args):
     TempImgList = os.listdir(TempDIR)
     for img in TempImgList:
         if img.endswith(".img"):
-            lpmake_args += " --partition={name}:none:{size}".format(name=removeext(img) , size=os.path.getsize(TempDIR + "/" + img))
+            lpmake_args += " --partition={name}:none:{size}".format(name=os.path.splitext(img)[0] , size=os.path.getsize(TempDIR + "/" + img))
             if os.path.getsize(TempDIR + "/" + img) != 0:
-                lpmake_args += " --image={name}={filedir}".format(name=removeext(img) , filedir=(TempDIR + "/" + img))
+                lpmake_args += " --image={name}={filedir}".format(name=os.path.splitext(img)[0] , filedir=(TempDIR + "/" + img))
     return lpmake_args
 
 def testdvi512(num):
