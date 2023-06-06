@@ -19,8 +19,8 @@ options:
                         temporarily be unsparsed
   -o OUTPUT, --output OUTPUT
                         Directs the output to a name of your choice
-  -g GSI, --gsi GSI     GSI (Generic System Image) that will be replacing the existing system.img (Stock Rom)
-  -s SLOT, --SLOT SLOT  number of slots on the device can only be 1 (A) or 2 (A/B)
+  -s SLOT, --SLOT SLOT  
+                        number of slots on the device can only be 1 (A) or 2 (A/B)
 ```
 
 ### Known Issues:
