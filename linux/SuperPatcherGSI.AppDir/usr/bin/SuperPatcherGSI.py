@@ -59,10 +59,12 @@ def IMGchoose(): # choose an img file to be replaced
                     try:
                         replacmentpath = input("Please Input Path To Replacment Partition:\n")
                         replacmentpath = str(pathlib.Path(replacmentpath).absolute())
-                        if replacmentpath.endswith(".img") or replacmentpath.endswith(".img "): # sometimes people tap space it ruins it and it can and will get confusing
+                        if replacmentpath.endswith(".img"):
                             brk = input("Are you sure this is the path to file (Y/n): ")
                             if brk == "Y" or brk == "y" or brk == "yes" or brk == "Yes" or brk == "": # just making sure
                                 break
+                        elif replacmentpath.endswith(" "):  # sometimes people tap space it ruins it and it can and will get confusing
+                            print("Path Ends With Space!!")
                         else:
                             print("Please Input a Valid Path to a IMG File!")
                     except ValueError:
