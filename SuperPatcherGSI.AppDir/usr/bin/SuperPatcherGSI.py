@@ -3,7 +3,7 @@ import argparse
 import shutil
 import pathlib
 
-TempDIR = os.getcwd() + "/" + "tmp"
+TempDIR = os.getcwd() + "/" + ".temp"
 HERE = os.path.realpath(os.path.dirname(__file__))
 
 parser = argparse.ArgumentParser(add_help=False)
@@ -48,23 +48,27 @@ def lpunpack():
 def IMGmanipulation(): # choose an img file to be replaced
     TempImgList = os.listdir(TempDIR)
     i = 0
-    for img in TempImgList:
-        if img.endswith(".img"):
-            print("option number " + str(i) + " " + TempImgList[i] + " size of (" + str(os.path.getsize(TempDIR + "/" + img)) + ") bytes")
-        i += 1
+    print("Chosse Operation:")
+    print("1. Delete Partition")
+    print("2. Replace Partition")
+    print("3. Add Partition")
+    Operation = input("select: ")
+    if Operation == "2" or Operation == "1":
+        for img in TempImgList:
+            if img.endswith(".img"):
+                print("option number " + str(i) + " " + TempImgList[i] + " size of (" + str(os.path.getsize(TempDIR + "/" + img)) + ") bytes")
+            i += 1
     while (True):
         try:
-            imgnum = input("Please Choose: ")
-            if int(imgnum) <= i - 1:
+            imgnum = "0"
+            if Operation == "2" or Operation == "1":
+                imgnum = input("Please Choose: ")
+            if int(imgnum) <= i - 1 or Operation == "3":
                 while (True):
                     try:
-                        print("Chosse Operation:")
-                        print("1. Delete Partition")
-                        print("2. Replace Partition")
-                        Operation = input("select: ")
                         if Operation == "1": # just making sure
                             os.remove(TempDIR + "/" + TempImgList[int(imgnum)])
-                            print("Img Deleted!")
+                            print("Partition Deleted!")
                             break
                         elif Operation == "2":
                             try:
@@ -72,10 +76,10 @@ def IMGmanipulation(): # choose an img file to be replaced
                                     replacmentpath = input("Please Input Path To Replacment Partition:\n")
                                     replacmentpath = str(pathlib.Path(replacmentpath).absolute())
                                     if replacmentpath.endswith(".img"):
-                                        brk = input("Are you sure this is the path to file (Y/n): ")
-                                        if brk == "Y" or brk == "y" or brk == "yes" or brk == "Yes" or brk == "": # just making sure
+                                        redo = input("Are you sure this is the path to file (Y/n): ")
+                                        if redo == "Y" or redo == "y" or redo == "yes" or redo == "Yes" or redo == "": # just making sure
                                             shutil.copy(replacmentpath , TempDIR + "/" + TempImgList[int(imgnum)])
-                                            print("Img Replaced!")
+                                            print("Partition Replaced!")
                                             break
                                     elif replacmentpath.endswith(" "):  # sometimes people tap space it ruins it and it can and will get confusing
                                         print("Path Ends With Space!!")
@@ -86,9 +90,27 @@ def IMGmanipulation(): # choose an img file to be replaced
                                 print("Please Input a Valid Path!")
                             except AttributeError:
                                 print("How did you even manage to get AttributeError, this is here just incase !?")
+                        elif Operation == "3":
+                            name = ""
+                            size = 0
+                            while (True):
+                                try:
+                                    if name == "":
+                                        name = input("Input Partition Name: ")
+                                    size = input("Input Partition Size: ")
+                                    print("name: " + name)
+                                    print("size: " + size)
+                                    redo = input("Is This Correct? (Y/n): ")
+                                    if redo == "Y" or redo == "y" or redo == "yes" or redo == "Yes" or redo == "": # just making sure
+                                        break
+                                    name = ""
+                                except ValueError:
+                                    print("Please Put a Valid Number!")
+                            os.system("dd if=/dev/zero of={tempdir}/{name}.img bs=1 count={size}".format(tempdir=TempDIR , name=name , size=size))
+                            break
                     except ValueError:
-                                print("Please Put a Valid Number!")
-                redo = input("Replace/Delete another (Y/n): ")
+                        print("Please Put a Valid Number!")
+                redo = input("Replace/Delete/Add another (Y/n): ")
                 if redo == "Y" or redo == "y" or redo == "yes" or redo == "Yes": # just making sure
                     IMGmanipulation()
                 break
@@ -98,7 +120,7 @@ def IMGmanipulation(): # choose an img file to be replaced
             print("Please Put a Number In!")
 
 def IMGsizeCALC(): # calculate size
-    totalsize = 512000000 # extra overhead of 0.5G
+    totalsize = 5120000 # a bit of overhead
     TempImgList = os.listdir(TempDIR)
     i = 0
     for img in TempImgList:
@@ -154,7 +176,7 @@ def main():
     print("============================")
     lpunpack()
     print("============================")
-    print("  choose img to replace ")
+    print("  img manipulation ")
     print("============================")
     
     
