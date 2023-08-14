@@ -24,7 +24,9 @@ options:
 ```
 
 ### Known Issues:
-please tell me if you find any
+ 1. for some pepole lpunpack.py crashes i need to find a fix for that somehow?
+### To Do:
+ 1. add a -p (path) flag that specifies -i is a folder with images to be packed into a super.img syntax will be: SuperPatcherGSI-x86_64.AppImage -p -i ./EXAMPLEFOLDER/ -o exanplesuper.img -s 2
 
 ### lpmake errors: 
 lpmake has no documentation (that I have heard of) except this one page here (https://android.googlesource.com/platform/system/extras/+/master/partition_tools/)
