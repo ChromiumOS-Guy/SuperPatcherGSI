@@ -6,10 +6,17 @@ import pathlib
 TempDIR = os.getcwd() + "/" + ".temp"
 HERE = os.path.realpath(os.path.dirname(__file__))
 
+def dir_path(string):
+    if os.path.isdir(string):
+        return os.path.realpath(string)
+    else:
+        raise NotADirectoryError(string)
+
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-i' , '--input' , type=argparse.FileType('r') , help='''input the super.img that is going to be modifed, if super.img is sparse its going to temporarily be unsparsed''')
 parser.add_argument('-o' , '--output', help="Directs the output to a name of your choice")
 parser.add_argument('-s' , '--SLOT' , type=int , help="number of slots on the device can only be 1 (A) or 2 (A/B)")
+parser.add_argument('-p', '--path' , type=dir_path , help="specifies input to be a folder and not an super.img")
 args = parser.parse_args()
 
 # err check
@@ -21,7 +28,13 @@ def check():
         else:
             print("Invalid Slot number ({slot})".format(slot=args.SLOT))
             err += " &SLOT"
-        if args.input.name.endswith(".img"):
+        if args.input == None:
+            if args.path != "":
+                pass
+            else:
+                print("Invalid path at PATG please input a valid directory")
+                err += " &InvalidPath"
+        elif args.input.name.endswith(".img"):
             pass
         else:
             print("Invalid Format at INPUT please use .img file")
@@ -162,6 +175,14 @@ def testdvi512(num):
     else:
         return False
 
+def copytotemp(cloneto , clonefrom):
+    files = os.listdir(clonefrom)
+    os.makedirs(cloneto)
+    for file in files:
+        print("copying " + file)
+        shutil.copy2(clonefrom + "/" + file , cloneto)
+    #shutil.copytree(clonefrom, cloneto)
+
 def main():
     err = check()
 
@@ -170,13 +191,18 @@ def main():
         return err
     else:
         print("flags successfully verified and appear to be correct, error code ({error})".format(error=err))
-    
+    if args.path != None:
+        print("============================")
+        print("   copying to temp dir...")
+        print("============================")
+        copytotemp(TempDIR , args.path)
+    else:
+        print("============================")
+        print("        unpacking...")
+        print("============================")
+        lpunpack()
     print("============================")
-    print("        unpacking...")
-    print("============================")
-    lpunpack()
-    print("============================")
-    print("  img manipulation ")
+    print("      img manipulation ")
     print("============================")
     
     
@@ -208,5 +234,11 @@ def main():
     shutil.rmtree(TempDIR) # clean tmp dir
     return err # return err code to external
 
-err = main()
+try:
+    err = main()
+except KeyboardInterrupt:
+    print("\n============================")
+    print("        cleaning...")
+    print("============================")
+    shutil.rmtree(TempDIR) # clean tmp dir
 exit(err)
