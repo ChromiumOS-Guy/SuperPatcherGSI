@@ -1,7 +1,7 @@
 # SuperPatcherGSI
 Autmated Script to Patch a Super.img with a GSI in python 3
 
-ONLY 64-bit Linux
+Linux/Windows 64-bit ONLY
 
 ### Linux (64-bit)
 ```bash
