@@ -47,7 +47,7 @@ options:
 
 ```
 
-python version used to test / build the linux/windows script (Python 3.10.6)
+python version used to test/build the linux/windows script (Python 3.10.6)
 
 ### Known Issues:
  1. for some pepole lpunpack.py crashes i need to find a fix for that somehow?
