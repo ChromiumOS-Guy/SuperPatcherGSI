@@ -11,7 +11,7 @@ Linux AppImage dosen't have the -p flag it gets reconized automaticlly so -p is 
 
 ## Command Flags (Linux):
 ```
-usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT] [-p PATH]
+usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT]
 
 options:
   -h                    show this help message and exit
