@@ -7,20 +7,30 @@ ONLY 64-bit Linux
 ```bash
 ./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -s 2 (device slots)
 ```
+
+### Windows (64-bit)
+```powershell
+python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -s 2 (device slots)
+```
+
+
 python version used to test / build the linux script (Python 3.10.6)
 ### Command Flags:
 ```
-usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-g GSI] [-s SLOT]
+usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT] [-p PATH]
 
 options:
-  -h, --help            displays all flags and there purpose
-  -i INPUT, --input INPUT
-                        input the super.img that is going to be modifed, if super.img is sparse its going to
-                        temporarily be unsparsed
-  -o OUTPUT, --output OUTPUT
+  -h                    show this help message and exit
+  -i INPUT
+                        Input the super.img that is going to be modifed, if super.img is sparse its
+                        going to temporarily be unsparsed
+                        you can also input a directory with files to be packed to an super.img
+  -p PATH               Replacment for INPUT incase you already have an unpacked super.img
+                        you can refer the path to the unpacked super.img folder
+  -o OUTPUT
                         Directs the output to a name of your choice
-  -s SLOT, --SLOT SLOT  
-                        number of slots on the device can only be 1 (A) or 2 (A/B)
+  -s slots              Number of slots on the device can only be 1 (A) or 2 (A/B)
+
 ```
 
 ### Known Issues:
@@ -40,4 +50,4 @@ Invalid sparse file format at header magic / Invalid sparse file format at heade
 ### sources:
 using lpmake for linux from (https://ci.android.com/builds/branches/aosp-master/grid)
 
-using lpunpack.py from (https://github.com/unix3dgforce/lpunpack)
+using lpunpack.py from (https://github.com/unix3dgforce/lpunpack), Compiled to .exe for Windows Version.
