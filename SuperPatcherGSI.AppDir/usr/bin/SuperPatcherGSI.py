@@ -56,16 +56,25 @@ def check():
 
 def lpunpack():
     #!/usr/bin/python  # -*- coding: latin-1 -*-
-    os.system("python3 {dir}/lpunpack.py {superimg} {tempdir}".format(superimg=args.input.name, tempdir=TempDIR , dir=HERE))
+    os.system("python3 '{dir}/lpunpack.py' {superimg} '{tempdir}'".format(superimg=args.input.name, tempdir=TempDIR , dir=HERE))
 
 def IMGmanipulation(): # choose an img file to be replaced
     TempImgList = os.listdir(TempDIR)
-    i = 0
+    d = 0
+    for img in TempImgList:
+            if img.endswith(".img"):
+                d += 1
     print("Chosse Operation:")
-    print("1. Delete Partition")
-    print("2. Replace Partition")
+    if d != 0:
+        print("1. Delete Partition")
+        print("2. Replace Partition")
     print("3. Add Partition")
     Operation = input("select: ")
+    if d == 0 and Operation != "3":
+        IMGmanipulation()
+    if Operation != "1" and Operation != "2" and Operation != "3":
+        IMGmanipulation()
+    i = 0
     if Operation == "2" or Operation == "1":
         for img in TempImgList:
             if img.endswith(".img"):
@@ -119,7 +128,7 @@ def IMGmanipulation(): # choose an img file to be replaced
                                     name = ""
                                 except ValueError:
                                     print("Please Put a Valid Number!")
-                            os.system("dd if=/dev/zero of={tempdir}/{name}.img bs=1 count={size}".format(tempdir=TempDIR , name=name , size=size))
+                            os.system("dd if=/dev/zero of='{tempdir}/{name}.img' bs=1 count={size}".format(tempdir=TempDIR , name=name , size=size))
                             break
                     except ValueError:
                         print("Please Put a Valid Number!")
@@ -158,7 +167,7 @@ def lpmake(devicesize , metadatasize):
     print(lpmake_args)
     print("============================")
     
-    return os.system("{dir}/bin/lpmake {lpargs}".format(lpargs=lpmake_args , dir=HERE))
+    return os.system("'{dir}/bin/lpmake' {lpargs}".format(lpargs=lpmake_args , dir=HERE))
 
 def lpmake_add_args(lpmake_args):
     TempImgList = os.listdir(TempDIR)
