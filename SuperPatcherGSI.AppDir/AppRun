@@ -15,7 +15,7 @@ while getopts ":i:o:s:h" o; do
             SLOT=${OPTARG}
             ;;
         h)
-            echo "usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT] [-p]
+            echo "usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT] [-p PATH]
 
 options:
   -h                    show this help message and exit
