@@ -20,12 +20,14 @@ while getopts ":i:o:s:h" o; do
 options:
   -h                    show this help message and exit
   -i INPUT
-                        input the super.img that is going to be modifed, if super.img is sparse its
+                        Input the super.img that is going to be modifed, if super.img is sparse its
                         going to temporarily be unsparsed
                         you can also input a directory with files to be packed to an super.img
+  -p PATH               Replacment for INPUT incase you already have an unpacked super.img
+                        you can refer the path to the unpacked super.img folder
   -o OUTPUT
                         Directs the output to a name of your choice
-  -s slots              number of slots on the device can only be 1 (A) or 2 (A/B)
+  -s slots              Number of slots on the device can only be 1 (A) or 2 (A/B)
 " ; exit 1
             ;;
     esac
