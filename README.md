@@ -3,6 +3,26 @@ Autmated Script to Patch a Super.img with a GSI in python 3
 
 Linux/Windows 64-bit ONLY
 
+## WARNING!:
+This tool is made with the assumption that people understand the risks involved in modifying Android's super partition and its potential consequences. I am not responsible for any damage caused by using this script.
+
+### Before proceeding:
+
+  * Always back up your original super.img partition and do not delete it until you are confident the patched version completely works, This backup is crucial if the need for recovery arises.
+    
+  * I recommend reviewing the scripts code to understand its functionality and potential risks.
+
+While the script is designed to operate within a contained directory, improper usage could still lead to unexpected behavior or require advanced recovery procedures.
+
+### Additional Resources
+
+  * https://piped.video/watch?v=obbHLxn_fFw (outdated!)
+    
+  * https://xdaforums.com/t/editing-system-img-inside-super-img-and-flashing-our-modifications.4196625/#post-84024089
+
+By using this tool, you acknowledge and accept the inherent risks involved.
+
+
 ## Linux (64-bit)
 ```bash
 ./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -s 2 (device slots)
@@ -50,7 +70,7 @@ options:
 python version used to test/build the linux/windows script (Python 3.10.6)
 
 ### Known Issues:
- 1. for some pepole lpunpack.py crashes i need to find a fix for that somehow?
+ * for some pepole lpunpack.py crashes i need to find a fix for that somehow?
 
 ### lpmake errors: 
 lpmake has no documentation (that I have heard of) except this one page here (https://android.googlesource.com/platform/system/extras/+/master/partition_tools/)
@@ -64,8 +84,8 @@ Invalid sparse file format at header magic / Invalid sparse file format at heade
 
 
 ### sources:
-using lpmake for linux from (https://ci.android.com/builds/branches/aosp-master/grid)
+* using lpmake for linux from (https://ci.android.com/builds/branches/aosp-master/grid)
 
-using lpmake for windows from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
+* using lpmake for windows from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
 
-using lpunpack.py from (https://github.com/unix3dgforce/lpunpack), Compiled to .exe for Windows Version.
+* using lpunpack.py from (https://github.com/unix3dgforce/lpunpack), Compiled to .exe for Windows Version.
