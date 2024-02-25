@@ -8,7 +8,7 @@ This tool is made with the assumption that people understand the risks involved 
 
 ### Before proceeding:
 
-  * Always back up your original super.img partition and do not delete it until you are confident the patched version completely works, This backup is crucial if the need for recovery arises.
+  * Always back up your original super.img partition and do not delete it until you are confident the patched version works completely, This backup is crucial if the need for recovery arises.
     
   * I recommend reviewing the scripts code to understand its functionality and potential risks.
 
