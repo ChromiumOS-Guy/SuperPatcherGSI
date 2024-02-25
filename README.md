@@ -12,7 +12,7 @@ This tool is made with the assumption that people understand the risks involved 
     
   * I recommend reviewing the scripts code to understand its functionality and potential risks.
 
-While the script is designed to operate within a contained directory, improper usage could still lead to unexpected behavior or require advanced recovery procedures.
+While the script is designed to operate within a contained directory, improper usage could still lead to unexpected behavior.
 
 ### Additional Resources
 
