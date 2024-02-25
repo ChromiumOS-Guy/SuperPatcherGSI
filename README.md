@@ -3,13 +3,13 @@ Autmated Script to Patch a Super.img with a GSI in python 3
 
 Linux/Windows 64-bit ONLY
 
-### Linux (64-bit)
+## Linux (64-bit)
 ```bash
 ./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -s 2 (device slots)
 ```
 Linux AppImage dosen't have the -p flag it gets reconized automaticlly so -p is incoperated into -i
 
-## Command Flags (Linux):
+### Command Flags (Linux):
 ```
 usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT]
 
@@ -25,12 +25,12 @@ options:
 
 ```
 
-### Windows (64-bit)
+## Windows (64-bit)
 ```powershell
 python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -s 2 (device slots)
 ```
 
-## Command Flags (Windows):
+### Command Flags (Windows):
 ```
 usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT] [-p PATH]
 
