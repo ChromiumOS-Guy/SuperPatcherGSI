@@ -4,11 +4,11 @@ Autmated Script to Patch a Super.img with a GSI in python 3
 Linux/Windows 64-bit ONLY
 
 ## WARNING!:
-This tool is made with the assumption that people understand the risks involved in modifying Android's super partition and its potential consequences. I am not responsible for any damage caused by using this script.
+This tool is made with the assumption that it's users understand the risks involved in modifying Android's super partition and its potential consequences. I am not responsible for any damage caused by using this script.
 
 ### Before proceeding:
 
-  * Always back up your original super.img partition and do not delete it until you are confident the patched version works completely, This backup is nice to have if the need for recovery arises.
+  * Always back up your original super.img partition and do not delete it until you are confident the patched version works correctly, This backup is nice to have if the need for recovery arises.
     
   * I recommend reviewing the scripts code to understand its functionality and potential risks.
 
