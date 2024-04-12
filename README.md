@@ -16,7 +16,7 @@ While the script is designed to operate within a contained directory, improper u
 
 ### Additional Resources
 
-  * https://piped.video/watch?v=obbHLxn_fFw (outdated!)
+  * https://youtu.be/Yj19JewRmSA
     
   * https://xdaforums.com/t/editing-system-img-inside-super-img-and-flashing-our-modifications.4196625/#post-84024089
 
