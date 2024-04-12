@@ -27,44 +27,27 @@ By using this tool, you acknowledge and accept the inherent risks involved.
 ```bash
 ./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -s 2 (device slots)
 ```
-Linux AppImage dosen't have the -p flag it gets reconized automaticlly so -p is incoperated into -i
-
-### Command Flags (Linux):
-```
-usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT]
-
-options:
-  -h                    show this help message and exit
-  -i INPUT
-                        Input the super.img that is going to be modifed, if super.img is sparse its
-                        going to temporarily be unsparsed
-                        you can also input a directory with files to be packed to an super.img
-  -o OUTPUT
-                        Directs the output to a name of your choice
-  -s slots              Number of slots on the device can only be 1 (A) or 2 (A/B)
-
-```
 
 ## Windows (64-bit)
 ```powershell
 python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -s 2 (device slots)
 ```
 
-### Command Flags (Windows):
+### Command Flags:
 ```
-usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT] [-p PATH]
+usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT]
 
 options:
-  -h                    show this help message and exit
-  -i INPUT
-                        Input the super.img that is going to be modifed, if super.img is sparse its
-                        going to temporarily be unsparsed.
-  -p PATH               Replacment for INPUT incase you already have an unpacked super.img
-                        you can refer the path to the unpacked super.img folder
-  -o OUTPUT
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+                        Input the super.img that is going to be modifed if
+                        super.img is sparse its going to temporarily be
+                        unsparsed, you can also input a directory with files
+                        to be packed to an super.img
+  -o OUTPUT, --output OUTPUT
                         Directs the output to a name of your choice
-  -s slots              Number of slots on the device can only be 1 (A) or 2 (A/B)
-
+  -s SLOT, --SLOT SLOT  number of slots on the device can only be 1 (A) or 2
+                        (A/B)
 ```
 
 python version used to test/build the linux/windows script (Python 3.10.6)
