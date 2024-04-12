@@ -2,48 +2,4 @@
 HERE="$(dirname "$(readlink -f "${0}")")"
 BIN="${HERE}/usr/bin"
 EXEC="${BIN}/SuperPatcherGSI.py"
-
-instructions() {
-    echo "usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT]
-    
-    options:
-      -h                    show this help message and exit
-      -i INPUT
-                            Input the super.img that is going to be modifed, if super.img is sparse its
-                            going to temporarily be unsparsed
-                            you can also input a directory with files to be packed to an super.img
-      -o OUTPUT
-                            Directs the output to a name of your choice
-      -s slots              Number of slots on the device can only be 1 (A) or 2 (A/B)
-    "
-}
-
-if [ $# -eq 0 ]; then
-    instructions
-    exit 1
-fi
-
-while getopts ":i:o:s:h" o; do
-    case "${o}" in
-        i)
-            INPUT=${OPTARG}
-            ;;
-        o)
-            OUTPUT=${OPTARG}
-            ;;
-        s)
-            SLOT=${OPTARG}
-            ;;
-        h)
-            instructions ; exit 1
-            ;;
-    esac
-done
-
-if   [ -d "${INPUT}" ]
-then exec python3 "${EXEC}" -p "${INPUT}" -o "${OUTPUT}" -s "${SLOT}"
-elif [ -f "${INPUT}" ]
-then exec python3 "${EXEC}" -i "${INPUT}" -o "${OUTPUT}" -s "${SLOT}"
-else echo "${INPUT} is not valid file or directory";
-     exit 1
-fi
+exec python3 "${EXEC}" "$@"
