@@ -1,5 +1,7 @@
 #!/bin/bash
+# find executable
 HERE="$(dirname "$(readlink -f "${0}")")"
 BIN="${HERE}/usr/bin"
 EXEC="${BIN}/SuperPatcherGSI.py"
+# execute script
 exec python3 "${EXEC}" "$@"
