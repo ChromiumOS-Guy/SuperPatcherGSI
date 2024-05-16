@@ -10,6 +10,8 @@ This tool is made with the assumption that it's users understand the risks invol
 
   * Always back up your original super.img partition and do not delete it until you are confident the patched version works correctly, This backup is nice to have if the need for recovery arises.
     
+  * Make sure to flash the vbmeta partition with the disable_verity flag for changes to presist because in some cases they don't.
+    
   * I recommend reviewing the scripts code to understand its functionality and potential risks.
 
 While the script is designed to operate within a contained directory, improper usage could still lead to unexpected behavior.
