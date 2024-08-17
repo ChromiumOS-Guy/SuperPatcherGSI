@@ -167,11 +167,13 @@ def IMGmanipulation(): # choose an img file to be replaced
 
 
 # lpmake
-def lpmake(devicesize , metadatasize): # fucntion for assembling lpmake flags 
-    lpmake_args = " --device-size={devicesize}".format(devicesize=devicesize) # add size of super.img
+def lpmake(devicesize, metadatasize): # function for assembling lpmake flags 
+    lpmake_args = (
+        " --device-size={devicesize}".format(devicesize=devicesize) # add size of super.img
         + " --metadata-slots={slot}".format(slot=args.SLOT) # define type of device the super.img is for s=1 (A) s=2 (A/B)
         + " --output {output}".format(output=args.output) # define output path
         + " --metadata-size {metadatasize}".format(metadatasize=metadatasize) # define metadata size
+    )
     sparse = input("make sparse (flashable with fastboot) ? (Y/n): ") # ask user if they want to sparse super.img
     if sparse == "Y" or sparse == "y" or sparse == "yes" or sparse == "Yes" or sparse == "": # just making sure
         lpmake_args += " --sparse"
