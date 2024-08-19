@@ -1,5 +1,7 @@
 # SuperPatcherGSI
-Automated Script to Patch a Super.img with a GSI in python 3 (I am open to pull requests if you have any)
+Automated Script to Patch a Super.img with a GSI in python 3,
+
+I am open to pull requests (to indev-release) if you have any.
 
 Linux/Windows 64-bit ONLY
 
