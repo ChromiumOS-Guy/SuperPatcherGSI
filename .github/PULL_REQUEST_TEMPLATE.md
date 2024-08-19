@@ -11,7 +11,7 @@
 *describe here*
 
 ## Notice
-- Please pull request to working-release branch NOT main!
+- Please pull request to indev-release branch NOT main!
 
 - if you don't want to wait for a new release for you're changes to be applied you should package in the appropriate formats for Windows and Linux (Linux being AppImage and Windows being a .zip file)
 and include them here by attaching the files in the pull request NOT in the code!
