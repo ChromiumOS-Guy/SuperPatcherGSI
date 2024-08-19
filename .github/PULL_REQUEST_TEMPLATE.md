@@ -29,8 +29,8 @@ be sure to test for both Windows & Linux
 - [ ] Extracting from super.img
 - [ ] Extracting from folder
 - [ ] Adding a dummy .img file
-- [ ] Replacing an .img file
-- [ ] Removing an .img file
+- [ ] Replacing a .img file
+- [ ] Removing a .img file
 - [ ] Device size override works
 - [ ] Metadata size override works
 - [ ] Sparse override works
