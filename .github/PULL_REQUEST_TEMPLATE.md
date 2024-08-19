@@ -13,7 +13,7 @@
 ## Notice
 - Please pull request to indev-release branch NOT main!
 
-- if you don't want to wait for a new release for you're changes to be applied you should package in the appropriate formats for Windows and Linux (Linux being AppImage and Windows being a .zip file)
+- if you don't want to wait for a merge between indev-release and main (aka new release version) for you're changes to be applied you should package in the appropriate formats for Windows and Linux (Linux being AppImage and Windows being a .zip file)
 and include them here by attaching the files in the pull request NOT in the code!
 
 ## Checklist
