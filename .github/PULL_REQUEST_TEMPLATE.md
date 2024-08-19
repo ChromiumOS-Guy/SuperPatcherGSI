@@ -21,7 +21,7 @@ be sure to test for both Windows & Linux
 
 - [ ] Slot flag works
 - [ ] Output flag works
-- [ ] Input flag works (and recognizes paths and .imgs when used)
+- [ ] Input flag works
 - [ ] Help flag works
 
 --- CLI
