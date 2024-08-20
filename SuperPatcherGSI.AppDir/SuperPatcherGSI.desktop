@@ -1,7 +1,0 @@
-#!/usr/bin/env xdg-open
-[Desktop Entry]
-Name=SuperPatcherGSI
-Exec=SuperPatcherGSI
-Icon=DefualtIcon
-Type=Application
-Categories=Utility
