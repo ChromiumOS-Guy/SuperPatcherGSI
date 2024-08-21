@@ -1,207 +1,141 @@
-import os
-import argparse
-import shutil
-import pathlib
+from PyQt6.QtWidgets import (
+    QApplication, QWidget,
+    QPushButton, QLabel,
+    QLineEdit,
+    QGridLayout, QFileDialog,
+    QListWidget,
+)
+from PyQt6.QtCore import (
+     Qt, pyqtSignal
+)
+from PyQt6.QtGui import QIcon
+import sys
+
 # local
-import Interactor
 import DIR_Manipulator
 import SuperPartitionManipulator
 
 
-# figure out if platform is Linux or Windows
-platform = Interactor.platform
+# Input Screen
+class Input_Window(QWidget):
+    switch_window = pyqtSignal(str ,int)
 
-# decides if input is path or file 
-def mod_path(string):
-    if os.path.isfile(string): # check if its a file
-        return string
-    elif os.path.isdir(string): # check if its a Directory == path
-        return os.path.realpath(string)
+    def __init__(self):
+        super().__init__()
+        self.resize(200,200) # define window size
+        self.setWindowIcon(QIcon("assets/icon.png")) # add Icon
+        self.setWindowTitle("INPUT SELECTION") # define title
 
-# init argparse
-parser = argparse.ArgumentParser(add_help=True)
-# add flags
-parser.add_argument('-i' , '--input' , type=mod_path , help='''Input the super.img that is going to be modifed if super.img is sparse its going to temporarily be unsparsed, you can also input a directory with files to be packed to an super.img''')
-parser.add_argument('-o' , '--output', help="Directs the output to a name of your choice")
-parser.add_argument('-s' , '--SLOT' , type=int , help="number of slots on the device can only be 1 (A) or 2 (A/B)")
-args = parser.parse_args() # get flags
+        layout = QGridLayout()
+        layout.setContentsMargins(20, 20 ,20 ,20) # define margins from window edge
+        self.setLayout(layout)
+
+        title = QLabel("THIS is Temporary UI") # Warn User
+        title.setStyleSheet("font-size: 18px;")
+        layout.addWidget(title, 0, 0, 1, 3, Qt.AlignmentFlag.AlignCenter)
+
+        self.optionlist = QListWidget() # select window to go to
+        self.optionlist.addItem("Super Partition Editor")
+        layout.addWidget(self.optionlist, 1, 1, Qt.AlignmentFlag.AlignCenter)
+
+        label1 = QLabel("Input File: ") # standard GUI Directory Inputs
+        layout.addWidget(label1, 2, 0)
+
+        label2 = QLabel("Input Directory: ")
+        layout.addWidget(label2, 3, 0)
+
+        self.input1 = QLineEdit() # Technaclliy these are the True Inputs
+        layout.addWidget(self.input1, 2, 1)
+
+        self.input2 = QLineEdit()
+        layout.addWidget(self.input2, 3, 1)
+
+        self.FileDialog1 = QFileDialog(self) # file Dialogs and buttons
+        self.FileDialog1.setFileMode(QFileDialog.FileMode.ExistingFiles)
+        self.FileDialog1.setNameFilter("Raw Disk Files (*.img)")
+        self.FileDialog1.accepted.connect(self.FileDialogLogic1)
+
+        browsefiles1 = QPushButton("browse files")
+        browsefiles1.clicked.connect(self.browsefiles1)
+        layout.addWidget(browsefiles1, 2 , 3, Qt.AlignmentFlag.AlignRight)
+
+        self.FileDialog2 = QFileDialog(self)
+        self.FileDialog2.setFileMode(QFileDialog.FileMode.Directory)
+        self.FileDialog2.accepted.connect(self.FileDialogLogic2)
+
+        browsefiles2 = QPushButton("browse files")
+        browsefiles2.clicked.connect(self.browsefiles2)
+        layout.addWidget(browsefiles2, 3 , 3, Qt.AlignmentFlag.AlignRight)
 
 
-# err check
-def check():
+        apply = QPushButton("Apply") # apply input and switch window
+        apply.setFixedWidth(120)
+        apply.clicked.connect(self.applyinput)
+        layout.addWidget(apply, 4 , 1, Qt.AlignmentFlag.AlignCenter)
+
+    def browsefiles1(self): # file Dialog and Button Functions
+        self.FileDialog1.show()
+
+    def FileDialogLogic1(self):
+        self.input1.setText(self.FileDialog1.selectedFiles()[0])
+        self.input2.setText("")
     
-    err = ""
-    try:
-        if args.SLOT == 1 or args.SLOT == 2: # check if slot flag has correct value
+    def browsefiles2(self):
+        self.FileDialog2.show()
+
+    def FileDialogLogic2(self):
+        self.input2.setText(self.FileDialog2.selectedFiles()[0])
+        self.input1.setText("")
+
+    def applyinput(self): # apply input and switch to next screen in controller
+        INPUT = ""
+
+        if self.input1.text() != "":
+            INPUT = self.input1.text()
+        elif self.input2.text() != "":
+            INPUT = self.input2.text()
+        else:
+            print("Invalid Input!")
+            exit(1)
+
+        self.switch_window.emit(INPUT, self.optionlist.currentIndex().row())
+
+
+
+app = QApplication(sys.argv)
+
+
+# Controller LOGIC
+class Controller:
+
+    current_window : QWidget = QWidget()
+
+    def __init__(self):
+        pass
+
+    def show_input(self): # could be called a "main menu" but its more like a selector with an INPUT
+        self.input_window = Input_Window()
+        self.input_window.switch_window.connect(self.window_selector)
+        self.current_window.hide() # hide current window
+        self.input_window.show()
+
+    def window_selector(self, INPUT, INDEX): # allows for switching of windows depnding on selection in input_window
+        self.input_window.hide()
+        if INDEX == 0:
+            self.show_super_partition_editor(INPUT)
+        elif INDEX == 1: # future stuff
             pass
-        else: # errors out if anything that isn't 1 (A) or 2 (A/B) is inputed into slot flag
-            print("Invalid Slot number ({slot})".format(slot=args.SLOT))
-            err += " &SLOT"
-        if args.input.endswith(".img") and os.path.isfile(args.input): # check if input flag is a file and ends with a .img
-            pass
-        elif os.path.isdir(args.input): # check if input is a path
-            pass 
-        else: # errors out if it isn't a path nor a .img file
-            print("Invalid Format at INPUT please use .img file or valid directory")
-            err += " &InvalidFormatINPUT"
-        if args.output.endswith(".img"): # checks that output format is .img
-            pass
-        else: # errors out if output format is not .img
-            print("Invalid Format at OUTPUT please use .img file")
-            err += " &InvalidFormatOUTPUT"
-        if err == "": #if everything checks then signal OK err code
-            err = "OK"
-    except ValueError: # catch value errors from inputing strings in integers and vis-versa
-        err = "Flag ValueError"
-    except AttributeError: # catch attribute errors if any are found
-        err = "Flag AttributeError"
-    return err
 
-# VERY TEMPORARY CLI
-def IMGmanipulation(): # choose an img file to be replaced
-    TempImgList = os.listdir(SuperPartitionManipulator.SuperPartitionDIR) # get a list of all files in TempDIR Directory 
-    d = 0
-    for img in TempImgList: # filter everything except .img files
-            if img.endswith(".img"):
-                d += 1
-    print("Chosse Operation:")
-    if d != 0: # if d == 0 then there are not .img to delete or replace so hide options
-        print("1. Delete Partition")
-        print("2. Replace Partition")
-    print("3. Add Partition")
-    Operation = input("select: ")
-    if d == 0 and Operation != "3": #restart function if user chooses an option that isn't useable without pre-existing .img files
-        IMGmanipulation()
-    if Operation != "1" and Operation != "2" and Operation != "3": # if operation is not supported then restart function
-        IMGmanipulation()
-    i = 0
-    if Operation == "2" or Operation == "1": # if operation was not create an .img file then print a list of available .img files to console
-        for img in TempImgList:
-            if img.endswith(".img"):
-                print("option number " + str(i) + " " + TempImgList[i] + " size of (" + str(os.path.getsize(SuperPartitionManipulator.SuperPartitionDIR + "/" + img)) + ") bytes")
-            i += 1
-    while (True): # main function logic
-        try:
-            imgnum = "0"
-            if Operation == "2" or Operation == "1": # if operation requieres a pre-existing .img then prompt user to select which .img to affect
-                imgnum = input("Please Choose: ") 
-            if int(imgnum) <= i - 1 or Operation == "3": # check that selected .img isn't out of bounds if user selected a .img to affect
-                while (True):
-                    try:
-                        if Operation == "1": # if user choose to delete a .img 
-                            if platform == 1: # delete selected .img on Linux platform
-                                os.remove(SuperPartitionManipulator.SuperPartitionDIR + "/" + TempImgList[int(imgnum)])
-                            if platform == 0: # delete selected .img on Windows platform
-                                os.remove(SuperPartitionManipulator.SuperPartitionDIR + "\\" + TempImgList[int(imgnum)])
-                            print("Partition Deleted!")
-                            break # exit second while loop
-                        elif Operation == "2": # if user choose to replace
-                            try:
-                                while(True):
-                                    replacmentpath = input("Please Input Path To Replacment Partition:\n") # ask for replacment .img path
-                                    replacmentpath = str(pathlib.Path(replacmentpath).absolute()) # get replacment .img absolute path 
-                                    if replacmentpath.endswith(".img"): # make sure path ends with a .img file extention
-                                        redo = input("Are you sure this is the path to file (Y/n): ") # make user confirm choice 
-                                        if redo == "Y" or redo == "y" or redo == "yes" or redo == "Yes" or redo == "": # if user confirms then replace .img else repeat while loop
-                                            if platform == 1: # replace .img for Linux Platform
-                                                shutil.copy(replacmentpath , SuperPartitionManipulator.SuperPartitionDIR + "/" + TempImgList[int(imgnum)])
-                                            if platform == 0: # replace .img for Windows Platform
-                                                shutil.copy(replacmentpath , SuperPartitionManipulator.SuperPartitionDIR + "\\" + TempImgList[int(imgnum)])
-                                            print("Partition Replaced!")
-                                            break # exit third while loop
-                                    elif replacmentpath.endswith(" "):  # prints error if path is invalid and repeats while loop
-                                        print("Path Ends With Space!!")
-                                    else:
-                                        print("Please Input a Valid Path to a IMG File!") 
-                                break # exit second while loop
-                            except ValueError: # if path value is invalid or not a string
-                                print("Please Input a Valid Path!")
-                            except AttributeError: # failsafe incase I missed an bug 
-                                print("How did you even manage to get AttributeError, this is here just incase !?")
-                        elif Operation == "3": # if user choose to add an .img file
-                            name = ""
-                            size = 0
-                            while (True):
-                                try:
-                                    if name == "": # if name is empty then ask for name
-                                        name = input("Input Partition Name: ")
-                                    size = input("Input Partition Size: ") # ask for size
-                                    print("name: " + name) # print inputed name
-                                    print("size: " + size) # print inputed size
-                                    redo = input("Is This Correct? (Y/n): ") # ask for confirmation
-                                    if redo == "Y" or redo == "y" or redo == "yes" or redo == "Yes" or redo == "":
-                                        break
-                                    name = ""
-                                except ValueError: # catch if user inputs a string instead of size
-                                    print("Please Put a Valid Number!")
-                            if platform == 1: # add a .img in Linux Platform
-                                os.system("dd if=/dev/zero of='{tempdir}/{name}.img' bs=1 count={size}".format(tempdir=SuperPartitionManipulator.SuperPartitionDIR , name=name , size=size))
-                            if platform == 0: # add a .img in Windows Platform
-                                os.system("powershell {command}"
-                                .format(command="fsutil file createnew '{tempdir}\\{name}.img' {size}"
-                                    .format(tempdir=SuperPartitionManipulator.SuperPartitionDIR , name=name , size=int(size))))
-                            break # exit second while loop
-                    except ValueError: # catch if string inputed instead of number (int)
-                        print("Please Put a Valid Number!")
-                redo = input("Replace/Delete/Add another (Y/n): ") # ask if user want to delete/replace/add another .img
-                if redo == "Y" or redo == "y" or redo == "yes" or redo == "Yes" or redo == "": # just making sure
-                    IMGmanipulation()
-                break # exit first while loop
-            else:
-                print("Please Put a Valid Number!")
-        except ValueError:
-            print("Please Put a Number In!")
+    def show_super_partition_editor(self, INPUT):
+        self.super_partition_editor_window = SuperPartitionManipulator.SuperPartitionEditorWindow(INPUT)
+        self.super_partition_editor_window.switch_window.connect(self.show_input) # return to input window when
+        self.current_window = self.super_partition_editor_window # allows other windows to accese this one by making it current window
+        self.super_partition_editor_window.show()
 
 
-def testdvi512(num): # test if number is divisable by 512
-    if num % 512 == 0: # return true if yes
-        return True
-    else: # false if no
-        return False
+controller = Controller() # start of program!
+controller.show_input()
 
-
-def main(): # script main()
-    err = check() # check err 
-
-    if err != "OK": # if error code isn't OK then print error message and exit
-        print("error code ({error}) exiting...!".format(error=err))
-        return err
-    else: # else print to console a confirmation message
-        print("flags successfully verified and appear to be correct, error code ({error})".format(error=err))
-    
-    print("============================")
-    print("        extracting...")
-    print("============================")
-    SuperPartitionManipulator.extract(args.input)
-
-    print("============================")
-    print("      img manipulation ")
-    print("============================")
-    do = input("Replace/Delete/Add (Y/n): ") # ask user if they want to affect existing .img files or create new ones
-    if do == "Y" or do == "y" or do == "yes" or do == "Yes" or do == "": # just making sure
-        IMGmanipulation() # IMG manipulation of selected partition
-    print("============================")
-    
-    #repack: note add sparse, devicesize and metadatasize options after convertion to GUI
-    lpmake_args = SuperPartitionManipulator.lpmake_args(args.output , args.SLOT)
-    print("============================")
-    print("     using these flags")
-    print("============================")
-    print(lpmake_args)
-    print("============================")
-    lperr = Interactor.lpmake(lpmake_args) # pass lpmake code to lperr and run lpmake function
-    err = lperr if lperr != 0 else err # give lpmake error as external code if there was an error
-    print("============================")
-    print("        cleaning...")
-    print("============================")
-    shutil.rmtree(DIR_Manipulator.TempDIR) # clean tmp dir
-    return err # return err code to external
-
-try:
-    err = main() # run script main()
-except KeyboardInterrupt: # clean if interrupted
-    print("\n============================")
-    print("        cleaning...")
-    print("============================")
-    shutil.rmtree(DIR_Manipulator.TempDIR) # clean tmp dir
-exit(err)
+sys.exit(app.exec(), # run program
+         DIR_Manipulator.deletetempDIR() # delete Temporary Directory on exit
+) # end of program

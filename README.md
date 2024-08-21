@@ -26,36 +26,6 @@ While the script is designed to operate within a contained directory, improper u
 
 By using this tool, you acknowledge and accept the inherent risks involved.
 
-
-## Linux (64-bit)
-```bash
-./SuperPatcherGSI-x64.AppImage -i super.img (input) -o super.new.img (output) -s 2 (device slots)
-```
-
-## Windows (64-bit)
-```powershell
-python .\SuperPatcherGSI.py -i super.img (input) -o super.new.img (output) -s 2 (device slots)
-```
-
-### Command Flags:
-```
-usage: SuperPatcherGSI.py [-h] [-i INPUT] [-o OUTPUT] [-s SLOT]
-
-options:
-  -h, --help            show this help message and exit
-  -i INPUT, --input INPUT
-                        Input the super.img that is going to be modifed if
-                        super.img is sparse its going to temporarily be
-                        unsparsed, you can also input a directory with files
-                        to be packed to an super.img
-  -o OUTPUT, --output OUTPUT
-                        Directs the output to a name of your choice
-  -s SLOT, --SLOT SLOT  number of slots on the device can only be 1 (A) or 2
-                        (A/B)
-```
-
-python version used to test/build the linux/windows script (Python 3.10.6)
-
 ### Known Issues:
  * for some pepole lpunpack.py crashes i need to find a fix for that somehow?
 
@@ -69,10 +39,13 @@ Errors  | Meaning/Fix
 Not enough space on device for partition (PARTITION NAME HERE) with size (PARTITION SIZE HERE)  | this means that the --device-size flag for lpmake was set with a maximum size which is smaller than all the partitions (unpacked img files + GSI) combined.
 Invalid sparse file format at header magic / Invalid sparse file format at header | this is actually a warning and can be ignored its actually a good sign if you get this warning
 
+### Requirements
+* PyQt6 (Windows: pip install PyQt6, Linux: packagemanager install python3-PyQt6)
+
 
 ### sources:
 * using lpmake for linux from (https://ci.android.com/builds/branches/aosp-master/grid)
 
 * using lpmake for windows from (https://github.com/affggh/lpmake_and_lpunpack_cygwin)
 
-* using lpunpack.py from (https://github.com/unix3dgforce/lpunpack), Compiled to .exe for Windows Version.
+* using lpunpack.py from (https://github.com/unix3dgforce/lpunpack)

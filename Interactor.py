@@ -22,11 +22,12 @@ BIN = HERE + "\\bin" if platform == 0 else HERE + "/bin"
 
 def lpunpack(SUPER : __file__, TempDIR : str) -> int:
     #!/usr/bin/python  # -*- coding: latin-1 -*-
-    err
+    err = 0
     if platform == 1: # if platform is Linux (platform == 1) then launch lpunpack.py on Linux
         err = os.system("python3 '{dir}/lpunpack.py' {superimg} '{tempdir}'".format(superimg=SUPER, tempdir=TempDIR , dir=BIN))
     if platform == 0:# if platform is Windows (platform == 0) then launch lpunpack.py on Windows
         err = os.system("python '{dir}\\lpunpack.py' {superimg} '{tempdir}'".format(superimg=SUPER, tempdir=TempDIR , dir=BIN))
+    
     return err
 
 # repack patched super.img
