@@ -172,9 +172,14 @@ class SparseChunkHeader(object):
 class LpMetadataBase:
     _fmt = None
 
-    @classmethod
+    # Don't mix @property and @classmethod decorators
+    # This will cause unexpected behavior
     @property
     def size(cls) -> int:
+        return struct.calcsize(cls._fmt)
+    
+    @classmethod
+    def get_size(cls) -> int: 
         return struct.calcsize(cls._fmt)
 
 
@@ -487,6 +492,11 @@ class Metadata:
     def _get_info(self) -> Dict:
         # TODO 25.01.2023: Liblp version 1.2 build_header_flag_string check header version 1.2
         result = {}
+        def get_size(index):
+            try:
+                return self.extents[index].num_sectors
+            except:
+                return 0
         try:
             result = {
                 "metadata_version": f"{self.header.major_version}.{self.header.minor_version}",
@@ -517,7 +527,7 @@ class Metadata:
                         "name": item.name,
                         "group_name": self.groups[item.group_index].name,
                         "is_dynamic": True,
-                        "size": self.extents[item.first_extent_index].num_sectors * LP_SECTOR_SIZE,
+                        "size": (get_size(item.first_extent_index)) * LP_SECTOR_SIZE,
                         "attributes": build_attribute_string(item.attributes),
                         "extents": self._get_extents_string(item)
                     } for item in self.partitions
@@ -643,19 +653,22 @@ class SparseImage:
                     if chunk_header.chunk_type == 0xCAC2:
                         data = self._read_data(chunk_data_size)
                         len_data = sector_size << 9
-                        out.write(struct.pack("B", 0) * len_data)
+                        out.truncate(out.tell() + len_data)
+                        out.seek(0, 2)
                         output_len += len(data)
                         sector_base += sector_size
                     else:
                         if chunk_header.chunk_type == 0xCAC3:
                             data = self._read_data(chunk_data_size)
                             len_data = sector_size << 9
-                            out.write(struct.pack("B", 0) * len_data)
+                            out.truncate(out.tell() + len_data)
+                            out.seek(0, 2)
                             output_len += len(data)
                             sector_base += sector_size
                         else:
                             len_data = sector_size << 9
-                            out.write(struct.pack("B", 0) * len_data)
+                            out.truncate(out.tell() + len_data)
+                            out.seek(0, 2)
                             sector_base += sector_size
                 chunks -= 1
         return unsparse_file
@@ -727,11 +740,11 @@ class LpUnpack(object):
         offsets = metadata.get_offsets()
         for index, offset in enumerate(offsets):
             self._fd.seek(offset, io.SEEK_SET)
-            header = LpMetadataHeader(self._fd.read(cast(int, LpMetadataHeader.size)))
-            header.partitions = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.size)))
-            header.extents = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.size)))
-            header.groups = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.size)))
-            header.block_devices = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.size)))
+            header = LpMetadataHeader(self._fd.read(cast(int, LpMetadataHeader.get_size())))
+            header.partitions = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.get_size())))
+            header.extents = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.get_size())))
+            header.groups = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.get_size())))
+            header.block_devices = LpMetadataTableDescriptor(self._fd.read(cast(int, LpMetadataTableDescriptor.get_size())))
 
             if header.magic != LP_METADATA_HEADER_MAGIC:
                 check_index = index + 1
@@ -867,7 +880,7 @@ def create_parser():
         '-p',
         '--partition',
         dest='NAME',
-        type=lambda x: re.split("\W+", x),
+        type=lambda x: re.split("\\W+", x),
         help='Extract the named partition. This can be specified multiple times or through the delimiter [","  ":"]'
     )
     _parser.add_argument(
